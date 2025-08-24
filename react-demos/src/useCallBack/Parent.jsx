@@ -1,18 +1,28 @@
 import { useState, useCallback, useMemo } from "react";
 import { memo } from "react";
-const Child = memo(({ onClick }) => {
+export const Child = memo(({ btnClick }) => {
+  const [count, setCount] = useState(0);
   console.log("Child rendered");
-  return <button onClick={onClick}>Child button(Click Me)</button>;
+  return (
+    <div>
+      <button onClick={btnClick}>Child button(Click Me)</button>;
+      <button onClick={() => setCount(count + 1)}>child Count: {count}</button>
+    </div >
+  );
 });
 export function Parent() {
+  console.log("Parent rendered");
   const [count, setCount] = useState(0);
   const [toggle, setToggle] = useState(false);
+  // const handleClick = () => {
+  //   console.log("Button clicked");
+  // };
   const handleClick = useCallback(() => {
     console.log("Button clicked");
   }, []);
   return (
     <div>
-      <Child onClick={handleClick} />
+      <Child btnClick={handleClick} />
       <br />
       <button onClick={() => setCount(count + 1)}>Count: {count}</button>
       <br />
@@ -22,3 +32,6 @@ export function Parent() {
     </div>
   );
 }
+
+// export { Parent, Child };
+

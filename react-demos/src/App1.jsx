@@ -7,6 +7,10 @@ import UserContext from "./Context/UserContext";
 import { UserProfile } from "./Context/UserProfile";
 import BatchingExample from "./components/BatchingExample";
 import { ExpensiveCalc } from "./useMemo/ExpensiveCalc";
+import { Parent } from "./useCallBack/Parent";
+import PortalExample from "./Modal(PORTAL)/PortalExample";
+import NoPortalExample from "./Modal(PORTAL)/NoPortalExample";
+import Pure from "./purecomponent/Pure";
 
 const LazyComponent = React.lazy(() => import("./MachineCoding/Q21"));
 
@@ -111,7 +115,11 @@ const App1 = () => {
 
       </UserContext> */}
       {/* <BatchingExample /> */}
-      <ExpensiveCalc />
+      {/* <ExpensiveCalc /> */}
+      {/* <Parent /> */}
+      {/* <PortalExample /> */}
+      {/* <NoPortalExample /> */}
+      <Pure />
     </>
   );
 };

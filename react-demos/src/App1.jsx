@@ -3,6 +3,10 @@ import React from "react";
 import UserInfoList from "./1ListRendering/UserInfoList";
 import WelcomeMessage from "./WelcomeMessage";
 import Pagination from "./5Pagination/Pagination";
+import UserContext from "./Context/UserContext";
+import { UserProfile } from "./Context/UserProfile";
+import BatchingExample from "./components/BatchingExample";
+import { ExpensiveCalc } from "./useMemo/ExpensiveCalc";
 
 const LazyComponent = React.lazy(() => import("./MachineCoding/Q21"));
 
@@ -97,10 +101,17 @@ const App1 = () => {
         </Routes>
       </FunctionalErrorBoundary> */}
       {/* <WrappedWelcomeMessage loading={loading} name="vrushabh" age={26} /> */}
-      <WelcomeMessage />
       {/* <UserList /> */}
       {/* <ToDoList /> */}
-      <Pagination />
+      {/* <Pagination /> */}
+      {/* <WelcomeMessage /> */}
+      {/* <UserContext >
+        <hr />
+        <UserProfile />
+
+      </UserContext> */}
+      {/* <BatchingExample /> */}
+      <ExpensiveCalc />
     </>
   );
 };

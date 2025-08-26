@@ -11,6 +11,7 @@ import { Parent } from "./useCallBack/Parent";
 import PortalExample from "./Modal(PORTAL)/PortalExample";
 import NoPortalExample from "./Modal(PORTAL)/NoPortalExample";
 import Pure from "./purecomponent/Pure";
+import RefExample from "./refExample";
 
 const LazyComponent = React.lazy(() => import("./MachineCoding/Q21"));
 
@@ -119,7 +120,8 @@ const App1 = () => {
       {/* <Parent /> */}
       {/* <PortalExample /> */}
       {/* <NoPortalExample /> */}
-      <Pure />
+      {/* <Pure /> */}
+      <RefExample />
     </>
   );
 };

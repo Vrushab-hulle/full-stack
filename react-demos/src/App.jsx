@@ -1,11 +1,13 @@
+import InfinteScroll from "./virtulization/InfinteScroll";
+import InfinteScrollWithReactQuery from "./virtulization/InfinteScrollWithReactQuery";
 import NormalList from "./virtulization/NormalList";
 import VirtualizedList from "./virtulization/VirtualizedList";
 
 const App = () => {
   return (
     <div>
-      {/* <NormalList /> */}
-      <VirtualizedList />
+      {/* <InfinteScroll /> */}
+      <InfinteScrollWithReactQuery />
     </div>
   );
 };

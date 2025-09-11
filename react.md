@@ -342,59 +342,110 @@ Debug tip: Add console.log inside useEffect to see how often it fires, and check
 Scenario: After login, users should be redirected to /dashboard, but unauthenticated users should go to /login.
 → How would you implement protected routes?
 
-Scenario: In nested routes, you need breadcrumbs (Home > Products > Electronics).
-→ How would you generate dynamic breadcrumbs?
-
-Scenario: A user refreshes the page on a detail view (/product/123) and sees a blank screen.
-→ How would you handle route-based data fetching?
 # ------------------------------------------------------------------------------------------------------------------------------
 
 🔹 4. Forms & Validation
 
-Scenario: A big form (20+ fields) lags while typing.
-→ How would you optimize it?
-
 Scenario: A password field should validate strength dynamically as the user types.
 → How would you implement it?
 
-Scenario: You need to validate an email asynchronously from the backend before form submission.
-→ How would you do async validation?
+import { useState } from "react";
+
+function PasswordField() {
+  const [password, setPassword] = useState("");
+  const [strength, setStrength] = useState("");
+
+  const checkStrength = (value) => {
+    let score = 0;
+    if (value.length >= 8) score++;
+    if (/[A-Z]/.test(value)) score++;
+    if (/[0-9]/.test(value)) score++;
+    if (/[^A-Za-z0-9]/.test(value)) score++;
+
+    if (score <= 1) return "Weak";
+    if (score === 2) return "Medium";
+    return "Strong";
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setStrength(checkStrength(value));
+  };
+
+  return (
+    <div>
+      <input
+        type="password"
+        value={password}
+        onChange={handleChange}
+        placeholder="Enter password"
+      />
+      {password && <p>Password strength: {strength}</p>}
+    </div>
+  );
+}
+
+
+# ------------------------------------------------------------------------------------------------------------------------------
+
 
 🔹 5. Testing
 
 
 # ------------------------------------------------------------------------------------------------------------------------------
-🔹 6. Error Handling & Resilience
 
-Scenario: An API call fails and crashes the component.
-→ How would you handle errors gracefully?
-
-Scenario: One widget in a dashboard fails but others should work.
-→ How would you use Error Boundaries?
-
-Scenario: You need retry logic for failed API requests.
-→ How would you implement exponential backoff retries?
-
-# ------------------------------------------------------------------------------------------------------------------------------
-🔹 7. Security
-
-Scenario: A React app stores JWT in localStorage.
-→ What are the risks and how would you secure it?
-
-Scenario: You need to prevent XSS attacks in React.
-→ How would you sanitize user input?
-
-Scenario: You need role-based access control.
-→ How would you restrict certain routes/components based on user role?
-
-# ------------------------------------------------------------------------------------------------------------------------------
-🔹 8. Integration with Backend
+#  8. Integration with Backend
 
 Scenario: A POST request succeeds, but the UI doesn’t update until refresh.
 → How would you implement optimistic UI updates?
 
 Scenario: Multiple components call the same API.
 → How would you centralize and cache data fetching?
+
+Optimistic updates → update UI immediately, rollback on error, finalize with refetch. Improves perceived performance.
+
+const queryClient = useQueryClient();
+
+const { mutate } = useMutation(addLike, {
+  // Optimistic update
+  onMutate: async (newLike) => {
+    await queryClient.cancelQueries(["likes"]);
+    const prevData = queryClient.getQueryData(["likes"]);
+
+    queryClient.setQueryData(["likes"], (old) => [...old, newLike]);
+
+    return { prevData };
+  },
+  // Rollback if error
+  onError: (err, newLike, context) => {
+    queryClient.setQueryData(["likes"], context.prevData);
+  },
+  // Refetch for consistency
+  onSettled: () => {
+    queryClient.invalidateQueries(["likes"]);
+  },
+});
+
+
+Centralized fetching & caching → React Query or SWR deduplicate requests, share cached results, and keep UI consistent.
+
+function useUserData() {
+  return useQuery(["user"], () =>
+    fetch("/api/user").then((res) => res.json())
+  );
+}
+
+function Profile() {
+  const { data: user } = useUserData();
+  return <h2>{user.name}</h2>;
+}
+
+function Sidebar() {
+  const { data: user } = useUserData();
+  return <p>{user.email}</p>;
+}
+
 
 
 # ------------------------------------------------------------------------------------------------------------------------------
@@ -408,6 +459,66 @@ Scenario: You need a dark mode toggle across the app.
 
 Scenario: A modal should close on Esc key press and clicking outside.
 → How would you implement this behavior?
+
+import React, { useState, useRef, useEffect } from "react";
+import ReactDOM from "react-dom";
+import "./styles.css";
+
+function Modal({ onClose, children }) {
+  const modalRef = useRef();
+
+  // Handle Esc key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+
+  // Handle outside click
+  const handleClickOutside = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
+  };
+
+  return ReactDOM.createPortal(
+    <div className="overlay" onClick={handleClickOutside}>
+      <div className="modal" ref={modalRef}>
+        <button className="close-btn" onClick={onClose}>
+          ✖
+        </button>
+        {children}
+      </div>
+    </div>,
+    document.getElementById("modal-root") // 🔑 make sure you have a <div id="modal-root"></div> in index.html
+  );
+}
+
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="App">
+      <h1>Modal Example</h1>
+      <button onClick={() => setIsOpen(true)}>Open Modal</button>
+
+      {isOpen && (
+        <Modal onClose={() => setIsOpen(false)}>
+          <h2>Hello 👋</h2>
+          <p>This modal closes on Esc key or outside click.</p>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+export default App;
+
+
 # ------------------------------------------------------------------------------------------------------------------------------
 
 

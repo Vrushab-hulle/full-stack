@@ -1,15 +1,24 @@
-import InfinteScroll from "./virtulization/InfinteScroll";
-import InfinteScrollWithReactQuery from "./virtulization/InfinteScrollWithReactQuery";
-import NormalList from "./virtulization/NormalList";
-import VirtualizedList from "./virtulization/VirtualizedList";
+// App.js
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import AuthProvider from "./Context/AuthContext";
+import ProtectedRoute from "./Context/ProtectedRoute";
+import { Login } from "./Context/Login";
 
-const App = () => {
+export default function App() {
   return (
-    <div>
-      {/* <InfinteScroll /> */}
-      <InfinteScrollWithReactQuery />
-    </div>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <>Welcome to dashboard Page</>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AuthProvider>
   );
-};
-
-export default App;
+}

@@ -1,21 +1,22 @@
+// NavBar.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <div>
-      <ul>
+    <nav>
+      <ul style={{ display: "flex", gap: "20px", listStyle: "none" }}>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li>
-          <Link to="/about">About</Link>
+          <Link to="/userDetails">User Details</Link>
         </li>
         <li>
-          <Link to="/Contact">Contact</Link>
+          <Link to="/todos">Your To-Do's</Link>
         </li>
       </ul>
-    </div>
+    </nav>
   );
 };
 

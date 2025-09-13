@@ -6,6 +6,9 @@ import { Login } from "./Context/Login";
 import UserDetails from "./StoreExample/UserDetails";
 import Layout from "./Layout";
 import Task from "./StoreExample/Task";
+import FetchOld from "./TanstackQuery/FetchOld";
+import ReactQuery from "./TanstackQuery/ReactQuery";
+import ReactQueryIndv from "./TanstackQuery/ReactQueryIndv";
 
 export default function App() {
   return (
@@ -28,6 +31,9 @@ export default function App() {
           />
           <Route path="/userDetails" element={<UserDetails />} />
           <Route path="/todos" element={<Task />} />
+          <Route path="/fetchOld" element={<FetchOld />} />
+          <Route path="/rtq" element={<ReactQuery />} />
+          <Route path="/rtq/:id" element={<ReactQueryIndv />} />
         </Route>
       </Routes>
     </AuthProvider>

@@ -32,7 +32,108 @@ Write async logic (like API calls) inside Redux.
 Dispatch actions before, during, and after the async call.
 
 Thunk is already included in Redux Toolkit, so no extra install needed.
+# ------------------------------------------------------------------------------------------------------------------------------
 
+# React Query/Tanstack query
+
+it's a library that helps you manage the state of data you fetch from server like apis in your react application
+one of the most powerful tol for managing server side state in react
+
+Advantages:
+1. Data fetching made easy
+2. building loading and error state
+3. automatic caching
+4. background refetching
+5. pagination and infinte scrollig
+
+Query Client -> it is core part of react-query library. it manages the caching, background fetching, data sync and other query related logic
+QueryCLientProvider -> it is used to provide the QueryClient instance to entire React application
+
+In React Query (also known as TanStack Query), a queryKey is a crucial identifier used to manage and interact with the query cache. It acts as a unique reference for each piece of data fetched and stored by React Query.
+
+Each queryKey must be unique to the data it represents. React Query uses this key to store the fetched data in its cache, allowing for efficient retrieval and preventing redundant fetches. If the queryKey changes, React Query treats it as a new query and will refetch the data.
+
+`gcTime (Garbage Collection Time)`
+Meaning: How long unused (inactive) cache data stays in memory before React Query garbage collects (removes) it.
+Default: 5 minutes
+👉 Example with your todos:
+You fetch todos in TodosComponent. Data is cached.
+You navigate away (no components are using todos).
+React Query marks it as inactive.
+Now, the gcTime timer (say 5 minutes) starts.
+If you don’t revisit TodosComponent within 5 minutes, the cache is cleared.
+If you revisit before 5 minutes, the old cache is reused (no immediate fetch just because of gcTime).
+
+⚠️ Correction to your understanding:
+Revisiting before 5 minutes does not automatically trigger a new fetch. It will reuse the cached data. Whether a fetch happens depends on staleTime, not gcTime.
+
+🔹 Does gcTime reset every time you leave a component?
+✅ Yes, it resets.
+Each time a query becomes inactive (no components are using it), React Query starts a new gcTime countdown.
+The countdown is not cumulative — it doesn’t “carry over” the previous unused duration.
+
+`🔹 staleTime`
+Meaning: How long cached data is considered fresh before being marked stale.
+Default: 0 ms (data is immediately stale after fetching).
+
+👉 Example with staleTime = 1 minute:
+You fetch todos. Data is cached and fresh for 1 min.
+Within 1 min, if you revisit TodosComponent:
+React Query sees data is still fresh → no refetch.
+After 1 min, data becomes stale. If you revisit after that:
+React Query will show stale data immediately (fast UI),
+but also triggers a background refetch to update.
+
+⚖️ In short:
+gcTime → How long unused data stays in cache before being deleted. (memory life)
+staleTime → How long data is considered fresh before React Query thinks it should refetch. (freshness life)
+
+
+`📌 Definition of Polling`
+Polling is a process where a client repeatedly makes requests to the server at regular time intervals to check if new data or updates are available.
+
+🔹 In simple terms:
+Instead of the server pushing updates to the client,
+The client keeps asking: “Do you have new data? Do you have new data?” at fixed intervals.
+
+ const {
+    data: post,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPostDetails,
+    gcTime: 5 * 60 * 1000, //the data is cached for 5mins it wont garbage collected for 5min when you dont visit this component
+    // staleTime: 20 * 1000, //the data is consider as fresh for 20sec so even if you visit the component within 20sec it wont refetch it uses caches data
+    refetchInterval: 1000, //after every 1 sec the fetch call is made 
+    refetchIntervalInBackground: true, //by default false if made it true even if we switch to another tabs the fetch continues in background 
+  });
+
+`useMutation`
+What is useMutation?
+useQuery → for fetching (GET) data.
+useMutation → for modifying (POST, PUT, PATCH, DELETE) data.
+
+Think of it like this:
+useQuery = “read-only”
+useMutation = “write
+
+const queryClient = useQueryClient()
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deletePost(id),
+    onSuccess: (data, id) => {
+     queryClient.setQueryData(["posts", pageNumber], (post) => {
+        // your logic
+      });
+    },
+  });
+
+  queryClient.setQueryData() is used to update cached data for specific query in this case it's the query with key['post',pageNumber],which
+  is likely represents the list of posts on the current page
+
+mutation.mutate() --> when you call mutate it tells react query to run the mutation function defined inside the useMutation hook. this is needed because mutation is an action that changes data 
+
+# ------------------------------------------------------------------------------------------------------------------------------
 # 1. Unnecessary Re-renders
 
 We can use:

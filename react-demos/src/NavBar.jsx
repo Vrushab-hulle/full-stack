@@ -15,6 +15,12 @@ const NavBar = () => {
         <li>
           <Link to="/todos">Your To-Do's</Link>
         </li>
+        <li>
+          <Link to="/fetchOld">Older Way fetch</Link>
+        </li>
+        <li>
+          <Link to="/rtq">New Way fetch(RTQ)</Link>
+        </li>
       </ul>
     </nav>
   );

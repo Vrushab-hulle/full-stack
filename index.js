@@ -1,4 +1,25 @@
 /**
+ * console.log([] == []);       // false
+console.log({} == {});       // false
+console.log(null == undefined); // true
+console.log(null === undefined); // false
+console.log(NaN == NaN);     // false
+console.log(NaN === NaN);    // false
+
+- "" (empty string) is falsy.
+- " " (string with a space) is truthy.
+
+console.log([] == 0);  // true concered to primitive-->[].toString()-->""-->0      
+console.log([] == false);    // true []-->''-->0 and false-->0
+console.log([] == ![]);      // true ![]-->false and []-->''-->0
+console.log([1,2] == "1,2"); // true
+console.log([0] == 0);       // true
+console.log([0] == false);   // true
+
+ */
+
+
+/**
  * Compile time is when code is translated into machine-readable form before execution, and compile-time errors are caught then.
 Runtime is when the program is actually running, and runtime errors occur (like null references or undefined variables).
 JIT (Just-In-Time compilation) combines both: it compiles code into bytecode first, then optimizes hot code into machine code at runtime.

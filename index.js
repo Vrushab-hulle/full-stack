@@ -10,6 +10,67 @@ Modern JavaScript engines detect hot code and use JIT compilation to optimize it
  */
 
 //----------------------------------------------------------------------------------------------------------------------
+
+/**
+ * deboucning is a technique used for optimization where we basically executes the function when there is certain pause in event
+ */
+function debounce(fn, delay) {
+  let timer;
+
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
+const search = (query) => {
+  console.log("searching for", query);
+};
+
+const debouncedsearch = debounce(search, 1000);
+debouncedsearch("ha");
+debouncedsearch("hard");
+debouncedsearch("hard js");
+debouncedsearch("hard js question");
+
+/**
+ * throttling is a optimzation technique where we excutes a function after a particular time frame is passed so in between timeframe
+ * all the fn call will be ignored
+ */
+
+function throttle(fn, delay) {
+  let lastCall = 0;
+
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastCall < delay) {
+      return;
+    }
+    lastCall = now;
+    return fn(...args);
+  };
+}
+
+const senChatMessage = (query) => {
+  console.log("searching for", query);
+};
+
+const messagWithSlowMode = throttle(senChatMessage, 2000);
+messagWithSlowMode("hi");
+messagWithSlowMode("hello");
+messagWithSlowMode("hello ji");
+messagWithSlowMode("hello ji kaise ho !!!");
+
+//----------------------------------------------------------------------------------------------------------------------
+
+/**
+ * fetch vs axios
+ * fetch is built in method, need manual error handling(does not handle http errors), we need to parse json
+ * axios is external library, handle http error, no need json parser , extra feture(request cancelltion and interceptors)
+ */
+//----------------------------------------------------------------------------------------------------------------------
 /**
  * Is JavaScript Object-Oriented?
  * 
@@ -87,6 +148,8 @@ dogs.speak(); // "Bruno barks."
 /*
 Use Object.assign when you want to copy/merge properties.
 Use Object.create when you want to set up inheritance or control the prototype.
+If you call a constructor function without the new keyword, JavaScript will treat it like a regular function — 
+and this will not refer to a new object, but to the global object (in browsers, that's window)
 */
 
 const obj = {
@@ -157,6 +220,98 @@ invite.call(employee1, "Hello", "How are you?");
 invite.apply(employee1, ["Hello", "How are you?"]);
 let inviteEmployee1 = invite.bind(employee1);
 inviteEmployee1("Hello", "How are you?");
+
+//----------------------------------------------------------------------------------------------------------
+/**
+ * polyfills --> our implementation of inbuilt function 
+ * Call
+ */
+Function.prototype.myCall = (objectContext = {}, ...args) => {
+  if (typeof this !== "function") {
+    throw new Error("error");
+  }
+  objectContext.fn = this;
+  objectContext.fn(...args);
+};
+
+Function.prototype.myApply = (context = {}, args = []) => {
+  if (typeof this !== "function") {
+    throw new Error();
+  }
+  if (Array.isArray(args)) {
+    throw new Error();
+  }
+  context.fn = this;
+  context.fn(...args);
+};
+
+Function.prototype.myBind = (context = {}, ...restArgs) => {
+  const self = this;
+  return function (...newArgs) {
+    self.apply(context, [...restArgs, ...newArgs]);
+  };
+};
+let printName = myName.myBind(object1, "kop");
+printName("mh");
+
+// Array.map((num,index,arr)=>{ })
+Array.prototype.myMap = function (cb) {
+		if (this == null) {
+        throw new TypeError('Array.prototype.myMap called on null or undefined');
+    }
+
+    // Validation 2: Check if `cb` is a function
+    if (typeof cb !== 'function') {
+        throw new TypeError(cb + ' is not a function');
+    }
+
+  let temp = [];
+  //this here will refer to arr we mapped to
+  for (let index = 0; index < this.length; index++) {
+    //here map return each any every elemt of callback i.e why we are pushing everythng
+    temp.push(cb(this[index], index, this));
+  }
+  return temp;
+};
+
+Array.prototype.myFilter = function (cb) {
+  if (typeof cb !== "function") {
+    throw new TypeError(cb + " is not a function");
+  }
+  let temp = [];
+
+  //this here will refer to arr we mapped to
+  for (let index = 0; index < this.length; index++) {
+    if (cb(this[index], index, this)) {
+      temp.push(this[index]);
+    }
+  }
+  return temp;
+};
+
+// Array.reduce((acc,curr,index,arr)=>{ },intialValue)
+
+Array.prototype.myReduce = function (cb, initialValue) {
+  if (this.length === 0 && initialValue === undefined) {
+    throw new TypeError("Reduce of empty array with no initial value");
+  }
+
+  let acc = initialValue;
+  let startIndex = 0;
+
+  // Handle case where no initialValue is provided
+  if (initialValue === undefined) {
+    acc = this[0];
+    startIndex = 1;
+  }
+
+  for (let i = startIndex; i < this.length; i++) {
+    acc = cb(acc, this[i], i, this);
+  }
+
+  return acc;
+};
+//----------------------------------------------------------------------------------------------------------
 
 /*
 What is JSON and its common operations

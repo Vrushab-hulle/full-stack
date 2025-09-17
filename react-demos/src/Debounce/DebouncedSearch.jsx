@@ -1,31 +1,60 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const DebouncedSearch = () => {
   const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [debounceSearch, setDebounceSearch] = useState(query);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedQuery(query);
+      if (query.trim() !== "") {
+        setDebounceSearch(query);
+        fetchData(query);
+      } else {
+        setResults([]);
+      }
     }, 500);
-
     return () => clearTimeout(timer);
   }, [query]);
 
   useEffect(() => {
-    if (debouncedQuery) {
-      console.log("debounce value ", query);
+    if (debounceSearch) {
+      console.log(query);
     }
-  }, [debouncedQuery]);
+  }, [debounceSearch]);
+
+  const fetchData = async (searchTerm) => {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/posts?q=${searchTerm}`
+      );
+      const data = await response.json();
+      setResults(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
-    <input
-      type="text"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      placeholder="Search..."
-      className="border p-2"
-    />
+    <div style={{ padding: "20px" }}>
+      <h2>Debounced Search</h2>
+      <input
+        type="text"
+        placeholder="Search posts..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{ padding: "8px", width: "300px" }}
+      />
+
+      <ul>
+        {results.map((item) => (
+          <li key={item.id}>
+            <strong>{item.title}</strong>
+            <p>{item.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

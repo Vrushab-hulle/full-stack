@@ -21,6 +21,9 @@ const NavBar = () => {
         <li>
           <Link to="/rtq">New Way fetch(RTQ)</Link>
         </li>
+        <li>
+          <Link to="/debounce">Debounce Effect</Link>
+        </li>
       </ul>
     </nav>
   );

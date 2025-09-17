@@ -9,6 +9,7 @@ import Task from "./StoreExample/Task";
 import FetchOld from "./TanstackQuery/FetchOld";
 import ReactQuery from "./TanstackQuery/ReactQuery";
 import ReactQueryIndv from "./TanstackQuery/ReactQueryIndv";
+import DebouncedSearch from "./Debounce/DebouncedSearch";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/fetchOld" element={<FetchOld />} />
           <Route path="/rtq" element={<ReactQuery />} />
           <Route path="/rtq/:id" element={<ReactQueryIndv />} />
+          <Route path="/debounce" element={<DebouncedSearch />} />
         </Route>
       </Routes>
     </AuthProvider>

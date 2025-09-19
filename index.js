@@ -1,4 +1,54 @@
 /**
+ * const dog = {
+  name: "Pluto",
+  bark: function () {
+    setTimeout(function () {
+      console.log(this.name);
+    }, 100);
+
+    setTimeout(() => {
+      console.log(this.name);
+    }, 200);
+  },
+};
+
+dog.bark();
+// undefined   (first timeout - regular function loses binding)
+// Pluto       (arrow captures from bark() context)
+
+ */
+
+const obj1 = {
+  name: "Outer",
+  inner: {
+    name: "Inner",
+    getName() {
+      console.log(this.name);
+    },
+  },
+};
+
+obj1.inner.getName(); // Inner
+
+(function () {
+  console.log(this);
+})(); 
+// window (non-strict)
+// undefined (strict)
+
+/** 
+| Binding Rule    | Example                             | `this` Value                    |
+| --------------- | ----------------------------------- | ------------------------------- |
+| **Default**     | `show()`                            | `undefined` (strict) / `window` |
+| **Implicit**    | `obj.fn()`                          | The object before `.`           |
+| **Explicit**    | `fn.call(obj)` / `.apply` / `.bind` | The object passed in            |
+| **Constructor** | `new Person()`                      | The new instance                |
+| **Arrow**       | `() => console.log(this)`           | Lexical `this` (outer scope)    |
+*/
+
+
+
+/**
  * console.log([] == []);       // false
 console.log({} == {});       // false
 console.log(null == undefined); // true
@@ -826,17 +876,17 @@ i.e. after 3 secs ('Hello There! 2' 'Promise resolved value!!') will get printed
  */
 
 /**
- * promise.all() 
+ * promise.all()
  * resolve --> result in array [val1,val2,val3]
  * reject --> return first rejected promise [err]
- * 
+ *
  * promise.allSettled()
  * resolve --> [val1,val2,val3]
  * reject --> [val1,err,val2]
- * 
+ *
  * promise.race()
  * first fullfilled promise either resoved or rejected
- * 
+ *
  * promise.any()
  * seek for first reolved promise
  *  But what if all promises got failed, so the returned result will be aggregated error i.e. [err1, err2, err3].

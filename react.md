@@ -1,3 +1,86 @@
+# `React Forms`
+
+import React from "react";
+import { useForm } from "react-hook-form";
+
+export default function SignupForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="p-4 max-w-sm mx-auto space-y-4"
+    >
+      {/* Name */}
+      <div>
+        <label className="block mb-1">Name</label>
+        <input
+          {...register("name", { required: "Name is required" })}
+          className="border p-2 w-full rounded"
+          placeholder="Enter your name"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-sm">{errors.name.message}</p>
+        )}
+      </div>
+
+      {/* Email */}
+      <div>
+        <label className="block mb-1">Email</label>
+        <input
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+              message: "Invalid email address",
+            },
+          })}
+          className="border p-2 w-full rounded"
+          placeholder="Enter your email"
+        />
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
+      </div>
+
+      {/* Password */}
+      <div>
+        <label className="block mb-1">Password</label>
+        <input
+          type="password"
+          {...register("password", {
+            required: "Password is required",
+            minLength: { value: 6, message: "At least 6 characters" },
+          })}
+          className="border p-2 w-full rounded"
+          placeholder="Enter password"
+        />
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        )}
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+      >
+        Sign Up
+      </button>
+    </form>
+  );
+}
+
+
+
 # `what is react fiber`
 
 React Fiber is the reconciliation engine (also known as the core algorithm) of React introduced in React 16. It’s a complete rewrite of the old stack-based architecture of React.

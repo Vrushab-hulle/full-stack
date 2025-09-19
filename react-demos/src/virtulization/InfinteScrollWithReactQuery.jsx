@@ -21,6 +21,9 @@ const InfinteScrollWithReactQuery = () => {
 
   const handelInfiniteScroll = async () => {
     try {
+      //inner height -->actual size of viewport 800px
+      //crollY --> how far user scrolled e.g 1200px
+      //scrollheight --> bottom of the whole page
       const bottom =
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 1;

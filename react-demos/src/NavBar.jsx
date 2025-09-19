@@ -27,6 +27,9 @@ const NavBar = () => {
         <li>
           <Link to="/hoc">HOC</Link>
         </li>
+        <li>
+          <Link to="/vl">Virtulaized List</Link>
+        </li>
       </ul>
     </nav>
   );

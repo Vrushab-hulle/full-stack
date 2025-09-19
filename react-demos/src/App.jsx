@@ -12,6 +12,7 @@ import ReactQueryIndv from "./TanstackQuery/ReactQueryIndv";
 import DebouncedSearch from "./Debounce/DebouncedSearch";
 import UserInfo from "./HOC/UserInfo";
 import withAuth from "./HOC/withAuth";
+import VirtualizedList from "./virtulization/VirtualizedList";
 
 export default function App() {
   const EnhancedComponent = withAuth(UserInfo);
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/rtq/:id" element={<ReactQueryIndv />} />
           <Route path="/debounce" element={<DebouncedSearch />} />
           <Route path="/hoc" element={<EnhancedComponent user="Alice" />} />
+          <Route path="/vl" element={<VirtualizedList />} />
         </Route>
       </Routes>
     </AuthProvider>

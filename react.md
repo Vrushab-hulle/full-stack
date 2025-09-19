@@ -860,7 +860,6 @@ Now, the gcTime timer (say 5 minutes) starts.
 If you don’t revisit TodosComponent within 5 minutes, the cache is cleared.
 If you revisit before 5 minutes, the old cache is reused (no immediate fetch just because of gcTime).
 
-⚠️ Correction to your understanding:
 Revisiting before 5 minutes does not automatically trigger a new fetch. It will reuse the cached data. Whether a fetch happens depends on staleTime, not gcTime.
 
 🔹 Does gcTime reset every time you leave a component?
@@ -1001,6 +1000,13 @@ return (
 You need to render 1 lakh rows in a table. If you try to render all rows at once, the browser freezes and becomes unresponsive.
 
 ✅ Solution: Optimize Rendering
+
+Imagine you have 10,000 items in a chat app:
+Without virtualization → All 10,000 messages are added to the DOM 😬 (laggy).
+With virtualization → Only the ~20 messages visible on screen (and maybe a few before/after) exist in the DOM.
+As you scroll, React (or another library) swaps items in/out seamlessly.
+
+As the user scrolls, items that leave the viewport are removed from the DOM, and new items entering the viewport are rendered.
 
 1. Pagination
    What it is: Break data into smaller chunks (say 50–100 rows per page).

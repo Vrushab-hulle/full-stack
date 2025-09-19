@@ -1,3 +1,107 @@
+# `what is react fiber`
+
+React Fiber is the reconciliation engine (also known as the core algorithm) of React introduced in React 16. It’s a complete rewrite of the old stack-based architecture of React.
+It enables React to break rendering work into chunks, prioritize updates, pause and resume work, and render asynchronously.
+In a large app, if you're typing in an input while the app is rendering a heavy component (like a long list), Fiber allows React to prioritize the input render first, then continue the rest of the work after.
+
+Key Goals of React Fiber:
+
+1. **Incremental Rendering**
+   React can split work into smaller units and spread it over multiple frames.
+2. **Prioritization of Updates**
+   More important updates (like typing or animations) get rendered **before** less important ones.
+3. **Pause and Resume Work**
+   Long tasks (like rendering a huge list) can be paused, so React doesn’t block the main thread.
+4. **Better Error Handling**
+   Using features like **Error Boundaries**.
+
+# `What are Dumb vs Smart Components in React?`
+
+1. Smart Components
+   Smart components are responsible for logic, data fetching, state management, and passing data to child components. They know how things work.
+2. Dumb Components
+   Dumb components are purely for displaying UI. They receive data via props and don't manage any logic or state themselves
+
+# `What is Hot Module Reloading (HMR) in Vite?`
+
+Hot Module Reloading (HMR) is a feature that allows changes made to your code (like in components, CSS, or state) to be instantly reflected in the browser without doing a full page reload.
+In the case of Vite, HMR is extremely fast because Vite serves source files over native ES modules and only updates the part of the module that changed
+
+# `What are the features of react ?`
+
+1. component based archtieutr
+2. unidirectional data flow
+3. jsx
+4. hooks api
+5. virtual dom
+6. reach ecosytem
+
+# `Passing Data from child to parent`
+
+function Parent(){
+const[datafromChild,setDataFromChild] = useState('')
+    function handleChildData(data){
+        setDataFromChild(data)
+    }
+    <>
+    <p>Child Data:{dataFromChild}</p>
+    <Child handleChildData={handleChildData}/>
+    </>
+
+}
+
+function Child({handleChildData}){
+const[data,setData] = useState('')
+    function handleData(){
+        handleChildData(data)
+    }
+}
+
+# `How to optimize React js app`
+1. useMemo and useCallback 
+2. avoid prop drilling (context and redux store)
+3. lazy loading code splliting
+4. use virtulization for large list
+5. minimize recolnlation with keys
+
+# `What is a Pure Component in React?`
+pure component are those which do automatically implements a shallow comparison of props and state to avoid unnecessary re-renders.
+
+# `Higher order component?`
+A Higher-Order Component (HOC) in React is simply a function that takes a component as input and returns a new component with enhanced functionality.
+It’s a pattern (not a React feature), often used for:
+Code reuse
+Cross-cutting concerns (e.g., authentication, logging)
+State or behavior injection
+
+# `Possible Scenarios Where Redux Store is Used in ERP`
+
+1.  Authentication & User Session
+
+Store the logged-in user info (username, roles, permissions, selected company, financial year, etc.).
+
+Used across:
+Navbar (to display username/company).
+Sidebar (to render only allowed menus).
+Backend API requests (for passing tokens).
+
+2. Company & Location Context
+
+In ERP, users often switch between companies, branches, plants, or locations.
+
+Store current company/location context in Redux so:
+All modules (Inventory, Accounts, HR) fetch data for the right company/location.
+Prevent reloading the entire app when switching.
+
+3. Notifications & Alerts
+
+Centralized store of real-time notifications:
+Approval pending.
+Production delay alerts.
+Low stock alerts.
+
+Shown in multiple places (header notification bell, dashboard widgets).
+
 # `Explain Strict Mode in React,when do you use it?`
 
 React.StrictMode is a wrapper component that helps highlight potential problems in an application during development.
@@ -289,13 +393,13 @@ Navigation and data updates happen client-side (in the browser) using JavaScript
 
 # `What is difference between virtual dom and dom in React js`
 
-***How Virtual DOM Works in React***
+**_How Virtual DOM Works in React_**
 Initial Render → React builds a Virtual DOM in memory.
 State/Props Change → React creates a new Virtual DOM.
 Diffing → React compares old VDOM vs new VDOM to detect changes (reconciliation).
 Batch Update → Only the changed parts are updated in the real DOM.
 
-***Actual Dom process:***
+**_Actual Dom process:_**
 “When the browser renders a page, it parses HTML to build the DOM tree, parses CSS to build the CSSOM, combines them into a render tree, calculates layout (position and size of elements), paints pixels to the screen. JavaScript can manipulate DOM and CSS, triggering reflow or repaint, which affects performance.”
 
 Important Notes:
@@ -304,15 +408,16 @@ Repaint happens when visual properties change but layout doesn’t (e.g., color)
 JavaScript blocking can delay rendering.
 Modern browsers optimize with incremental layout & paint.
 
-***critical rendering path:***
-- css blocks the rendering unless an until all the css loads it won't render anything on screen because there might be chance of overiding css
- - in contarst script is parser blocking(but in modern browsser they download all js files in parallel along with css)
- - in render tree only the nodes which we want to show on screen is added (skips display none property)
- - layout just calculates the all the sizes of elements and decide where to display what
- - if there is change in window size for new dom node is added it triggers reflow and all procrss happens again
+**_critical rendering path:_**
 
+- css blocks the rendering unless an until all the css loads it won't render anything on screen because there might be chance of overiding css
+- in contarst script is parser blocking(but in modern browsser they download all js files in parallel along with css)
+- in render tree only the nodes which we want to show on screen is added (skips display none property)
+- layout just calculates the all the sizes of elements and decide where to display what
+- if there is change in window size for new dom node is added it triggers reflow and all procrss happens again
 
 # `What is controlled and uncontrolled component in React js.`
+
 Controlled Component:
 Form input is controlled by React state. Value is set via state and changes via onChange.
 Dyanamic validation is easy
@@ -322,6 +427,7 @@ Form input manages its own internal state. You read the value using refs.
 Dyanamic validation is Hard
 
 # `What is hooks in React js.`
+
 Hooks are functions that let you “hook into” React features (state, lifecycle, context, refs, etc.) from functional components.
 Introduced to replace most use cases for class components and to enable easier code reuse via custom hooks.
 
@@ -329,7 +435,7 @@ Introduced to replace most use cases for class components and to enable easier c
 Call hooks at the top level of your component or custom hook — never inside loops, conditions or nested functions.
 Call hooks only from React functions — either functional components or custom hooks (not regular JS functions).
 
-***useState***
+**_useState_**
 useState is a Hook that lets you add state to functional components.
 State here means data that changes over time and affects rendering.
 
@@ -341,23 +447,24 @@ const [count, setCount] = useState(0);
 
 const [user, setUser] = useState({ name: "", age: "" });
 const handleChange = (e) => {
-    setUser({ ...user, name: e.target.value }); // spread old state
+setUser({ ...user, name: e.target.value }); // spread old state
 };
 
 function CounterWrong() {
-  const [count, setCount] = React.useState(0);
+const [count, setCount] = React.useState(0);
 
-  const handleClick = () => {
-    setCount(count + 1);
-    setCount(count + 1);
-  };
+const handleClick = () => {
+setCount(count + 1);
+setCount(count + 1);
+};
 
-  return (
-    <div>
-      <p>Count: {count}</p>
-      <button onClick={handleClick}>Increment Twice</button>
-    </div>
-  );
+return (
+
+<div>
+<p>Count: {count}</p>
+<button onClick={handleClick}>Increment Twice</button>
+</div>
+);
 }
 👉 What happens?
 Suppose count = 0.
@@ -370,12 +477,12 @@ If you use setCount(count + 1), multiple updates in the same render use the same
 setCount(prev => prev + 1) ensures updates run sequentially with the latest state.
 Since React 18, automatic batching also applies in async code (like timeouts, fetches).
 
-***useEffect ***
+**_useEffect _**
 useEffect(() => {
-  // side effect logic here
-  return () => {
-    // cleanup logic (optional)
-  };
+// side effect logic here
+return () => {
+// cleanup logic (optional)
+};
 }, [dependencies]);
 
 Effect function runs after the render is committed to the screen.
@@ -388,41 +495,41 @@ Dependency array is crucial → forgetting it may cause infinite loops.
 For layout-related updates (like measuring DOM before paint), use useLayoutEffect.
 Multiple useEffects can be used in one component → React runs them in order.
 
-***useContext***
+**_useContext_**
 
 const MyContext = createContext();
 
 function ContextProvider({children}){
-  const[name,setName] = useState({name:'vrushbah',age:27})
+const[name,setName] = useState({name:'vrushbah',age:27})
 
-  return (
-    <MyContext.Provider value={name}>
-        {children}
-    </MyContext.Provider>
-  )
+return (
+<MyContext.Provider value={name}>
+{children}
+</MyContext.Provider>
+)
 }
 
 function ToolBar(){
-  const user = useContext(MyContext);
-  return (
-    <>
-      {user.name}-{user.age}
-    </>
-  )
+const user = useContext(MyContext);
+return (
+<>
+{user.name}-{user.age}
+</>
+)
 
 }
 
 const App = ()=>{
-  <>
-    <ContextProvider>
-      <ToolBar />
-    </ContextProvider>
-  </>
+<>
+<ContextProvider>
+<ToolBar />
+</ContextProvider>
+</>
 }
 
 useContext is a hook that allows components to access values from React Context without prop drilling. We wrap components with a Context Provider, and any child can consume the value directly with useContext. It’s often used for themes, authentication, or global settings."
 
-***useRef***
+**_useRef_**
 
 🔹 What is useRef?
 useRef is a hook that returns a mutable object with a .current property.
@@ -445,19 +552,20 @@ Timeout/interval IDs
 
 Pitfall: If you want UI updates → use useState, not useRef.
 
-  React.useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setCount(c => c + 1);
-    }, 1000);
+React.useEffect(() => {
+intervalRef.current = setInterval(() => {
+setCount(c => c + 1);
+}, 1000);
 
     return () => clearInterval(intervalRef.current);
-  }, []);
+
+}, []);
 
 🔹 Key Difference
 Normal variable → gets re-declared/reset on every render. ❌ Loses its previous value.
 useRef → value is persistent across renders. ✅ Stays the same object.
 
-***useReducer ***
+**_useReducer _**
 
 A hook that lets you manage complex state logic.
 Alternative to useState.
@@ -478,40 +586,39 @@ When updates depend on previous state.
 When state transitions follow clear actions (like Redux).
 
 let intialValue = {
-  name:"",
-  email:""
+name:"",
+email:""
 }
 const Form(){
-  const[form,dispatch] = useReducer(formReducer,intialValue)
+const[form,dispatch] = useReducer(formReducer,intialValue)
 
 const handleChange = (e)=>{
-  const{name,value} = e.target
-  dispatch({name,value})
+const{name,value} = e.target
+dispatch({name,value})
 }
 
-  return(
-    <>
-      <input name="name" value={form.name} onChange={handleChange}  />
-      <input name="email" value={form.email} onChange={handleChange}  />
-    </>
-  )
+return(
+<>
+<input name="name" value={form.name} onChange={handleChange}  />
+<input name="email" value={form.email} onChange={handleChange}  />
+</>
+)
 }
-
 
 const formReducer = (state,action)=>{
-  return {
-    ...state,
-    [action.name]:action.value
-  }
+return {
+...state,
+[action.name]:action.value
+}
 }
 
 # `What is jsx, babel, webpack?`
 
 1. JSX (JavaScript XML)
-A syntax extension for JavaScript.
-Looks like HTML but is transformed into React’s createElement() calls.
-Makes UI code more readable and declarative.
-JSX is not understood by browsers → must be converted (via Babel) into plain JS.
+   A syntax extension for JavaScript.
+   Looks like HTML but is transformed into React’s createElement() calls.
+   Makes UI code more readable and declarative.
+   JSX is not understood by browsers → must be converted (via Babel) into plain JS.
 
 🔹 2. Babel
 A JavaScript compiler (transpiler).
@@ -559,24 +666,24 @@ Modern official Redux library to simplify boilerplate.
 Provides:
 createSlice() → auto generates reducers + actions
 configureStore() → simpler store setup
-Built-in support for async via createAsyncThunk. 
+Built-in support for async via createAsyncThunk.
 
 const userSlice = createSlice({
-  name:'users',
-  intialValue:[],
-  reducer:{
-    addUser(state,action){
-      state.push(action.payload)
-    }
-  }
+name:'users',
+intialValue:[],
+reducer:{
+addUser(state,action){
+state.push(action.payload)
+}
+}
 });
 export const{addUser} = userSlice.action;
 export default userSlice.reducer
 
 const store= configureStore({
-  reducer:{
-    users:userReducer
-  }
+reducer:{
+users:userReducer
+}
 })
 
 //MyComponet
@@ -585,52 +692,56 @@ const dispatch = useDispatch()
 
 dispatch(addUser())
 
-if we want to manage async task we can use creatAsyncThunk function to handle all async operation in store from 
-redux/@toolkit library 
+if we want to manage async task we can use creatAsyncThunk function to handle all async operation in store from
+redux/@toolkit library
+
 - for example fetching the todo's of user and storing it in store
-- while creating the slice we have extraReducer inside it has builder 
+- while creating the slice we have extraReducer inside it has builder
 - builder is an object passed automatically by RTK when you use the function form of extraReducers.
 - It exposes methods (like addCase, addMatcher, addDefaultCase) that let you define how your slice should respond to actions.
 
 # `Explain lifecycle method in React js`
 
-Mounting 
-  - ctor
-  - static getDerivedStateFromProps(props,state)
-  - render()
-  - componentDidMount()
-Updating
-  - static getDerivedStateFromProps(props,state)
-  - shouldComponentUpdate
-  - render
-  - getSnapShotBeforeUpdate(prevProp,prevState)
-  - componentDidMount()
-Unmounting
-  - componentWillUnmount
+Mounting
+
+- ctor
+- static getDerivedStateFromProps(props,state)
+- render()
+- componentDidMount()
+  Updating
+- static getDerivedStateFromProps(props,state)
+- shouldComponentUpdate
+- render
+- getSnapShotBeforeUpdate(prevProp,prevState)
+- componentDidMount()
+  Unmounting
+- componentWillUnmount
 
 # `What is portal`
+
 A Portal in React allows you to render children into a different part of the DOM tree (outside the parent component’s hierarchy).
 
 function Modal({children}){
-  return (
-    <>
-      ReactDemo.createPortal(<div>{children}</div>,document.getElementById('modal-root'))
-    </>
-  )
+return (
+<>
+ReactDemo.createPortal(<div>{children}</div>,document.getElementById('modal-root'))
+</>
+)
 }
 export default Modal
 
 function App(){
-  const[open,setOpen] = useState(false)
-  return(
-    <>
-      <button onClick={()=>setOpen(prev=>!prev)}>show modal</button>
-      {open && <Modal>
-        <p>Hey This is Modal using Portal</p>
-      <button onClick={()=>setOpen(prev=>!prev)}>show modal</button>
-      </Modal>}
-    </>
-  )
+const[open,setOpen] = useState(false)
+return(
+<>
+<button onClick={()=>setOpen(prev=>!prev)}>show modal</button>
+{open && <Modal>
+
+<p>Hey This is Modal using Portal</p>
+<button onClick={()=>setOpen(prev=>!prev)}>show modal</button>
+</Modal>}
+</>
+)
 }
 
 # `What is Reconciliation?`
@@ -651,7 +762,8 @@ Commit Phase
 Updates only the necessary parts of the real DOM (not the whole page).
 
 Different element type → Replace entire subtree.
-<div /> → <p />  // React removes <div> and creates <p> 
+
+<div /> → <p />  // React removes <div> and creates <p>
 
 Same element type → Update only changed attributes/props.
 <button className="red" /> → <button className="blue" /> // React only changes className, not the whole <button>
@@ -662,10 +774,10 @@ Without stable keys, React may unnecessarily re-render or misplace elements.
 
 {items.map(item => <li key={item.id}>{item.text}</li>)}
 
-
 # `What is server side render in React js`.
 
 React.js offers server-side rendering and client-side rendering options.
+
 - Server-side rendering renders web pages on the server and sends fully-rendered HTML to the client.
 - Server-side rendering offers faster initial load times and improved SEO optimization.
 
@@ -673,13 +785,12 @@ When a user makes a request for a webpage, the server generates the HTML, includ
 This is especially beneficial for users with slower internet connections or less powerful devices. Second, SSR improves SEO optimization by sending fully-rendered HTML to search engine crawlers, making it easier for them to index and rank your website. Lastly, SSR enhances user experience by ensuring that the content is immediately visible, reducing the time users have to wait for the page to load.
 
 # `What is node module in React js`
+
 node_modules is a folder automatically created when you run
-  - npm install
-It contains all the packages (dependencies and sub-dependencies) listed in your package.json.
-It is managed by npm (Node Package Manager) or yarn.
 
-
-
+- npm install
+  It contains all the packages (dependencies and sub-dependencies) listed in your package.json.
+  It is managed by npm (Node Package Manager) or yarn.
 
 # `React Performance – Scenario Based Questions`
 

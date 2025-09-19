@@ -1,11 +1,12 @@
-import { useState } from "react";
+const withAuth = (WrappedComponent) => {
+  return (props) => {
+    const isLoggedIn = true; // pretend we got this from context or state
 
-const withAuth = (Component) => {
-  const [count, setCount] = useState(0);
-  return function () {
-    return (
-      <Component count={count} incrementCount={() => setCount(count + 1)} />
-    );
+    if (!isLoggedIn) {
+      return <h3>⚠️ Please login to continue</h3>;
+    }
+
+    return <WrappedComponent {...props} />;
   };
 };
 

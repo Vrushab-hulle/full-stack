@@ -18,6 +18,13 @@ console.log([0] == false);   // true
 
  */
 
+/**
+ * scope is directly related to lexical env.
+ * lexical env. is nothing but local scope + lexcial env of its parent
+ * closure is function bundled along with its lexical env.
+ * e.g module design pattern,currying,data hiding and encapsulation,memoization,setTimeout()
+ * disadvantage : over consumption of memory,memory leak,freeze browser
+ */
 
 /**
  * Compile time is when code is translated into machine-readable form before execution, and compile-time errors are caught then.
@@ -28,6 +35,11 @@ JavaScript is traditionally an interpreted language, but modern JS engines (like
 
  "Hot code" is code that runs very frequently (like loops or commonly called functions).
 Modern JavaScript engines detect hot code and use JIT compilation to optimize it into machine code, improving performance.
+
+parsing -->code goes to parsing stage where it is converted to AST 
+compilation--> then at complation stage it has jit the ast from previous stage -->goes to interpreter which converts hi-level code to low level code,
+  also complier works hand in hand to complie and form optimize code
+execution-->code and memory phase
  */
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -244,7 +256,7 @@ inviteEmployee1("Hello", "How are you?");
 
 //----------------------------------------------------------------------------------------------------------
 /**
- * polyfills --> our implementation of inbuilt function 
+ * polyfills --> our implementation of inbuilt function
  * Call
  */
 Function.prototype.myCall = (objectContext = {}, ...args) => {
@@ -277,14 +289,14 @@ printName("mh");
 
 // Array.map((num,index,arr)=>{ })
 Array.prototype.myMap = function (cb) {
-		if (this == null) {
-        throw new TypeError('Array.prototype.myMap called on null or undefined');
-    }
+  if (this == null) {
+    throw new TypeError("Array.prototype.myMap called on null or undefined");
+  }
 
-    // Validation 2: Check if `cb` is a function
-    if (typeof cb !== 'function') {
-        throw new TypeError(cb + ' is not a function');
-    }
+  // Validation 2: Check if `cb` is a function
+  if (typeof cb !== "function") {
+    throw new TypeError(cb + " is not a function");
+  }
 
   let temp = [];
   //this here will refer to arr we mapped to
@@ -722,6 +734,14 @@ pending: Initial state, neither fulfilled nor rejected.
 
     What is promise chaining
     The process of executing a sequence of asynchronous tasks one after another using promises is known as Promise chaining.
+
+    A Promise is in one of these states:
+    pending: initial state, neither fulfilled nor rejected.
+    fulfilled: meaning that the operation was completed successfully.
+    rejected: meaning that the operation failed.
+
+    // 💡 async function always returns a promise, even if I return a simple string from below
+    function, async keyword will wrap it under Promise and then return.
     */
 
 //    const promise = new Promise((resolve, reject) => {
@@ -730,10 +750,97 @@ pending: Initial state, neither fulfilled nor rejected.
 //       }, 5000);
 // });
 
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise resolved value!!");
+  }, 3000);
+});
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Promise resolved value by p2!!");
+  }, 2000);
+});
+
+// 📌 Promise.then/.catch way
+function getData() {
+  // JS engine will not wait for promise to be resolved
+  p.then((res) => console.log(res));
+  console.log("Hello There!");
+}
+getData();
+// First `Hello There!` would be printed and then after 3 secs 'Promise resolved value!!' will be printed.
+
+// 📌 async-wait way:
+async function handlePromise() {
+  // JS Engine will waiting for promise to resolve.
+  const val = await p;
+  console.log("Hello There!");
+  console.log(val);
+}
+handlePromise();
+// This time `Hello There!` won't be printed immediately instead after 3 secs `Hello There!` will be printed followed by 'Promise resolved value!!'
+// 💡 So basically code was waiting at `await` line to get the promise resolve before moving on to next line.
+// Above is the major difference between Promise.then/.catch vs async-await
+
 // promise
 // .then((value) => console.log(value)) // Logs after 5 seconds: "I'm a Promise!"
 // .catch((error) => console.error(error)) // Handles any rejection
 // .finally(() => console.log("Done")); // Runs regardless of success or failure
+
+async function handlePromise() {
+  console.log("Hi");
+  const val = await p;
+  console.log("Hello There!");
+  console.log(val);
+  const val2 = await p;
+  console.log("Hello There! 2");
+  console.log(val2);
+}
+handlePromise();
+/* In above code example, will our program wait for 2 time or will it execute parallely.
+📌 `Hi` printed instantly -> now code will wait for 3 secs -> After 3 secs both promises
+will be resolved so ('Hello There!' 'Promise resolved value!!' 'Hello There! 2' 'Promise
+resolved value!!') will get printed immediately.*/
+
+async function handlePromise() {
+  console.log("Hi");
+  const val = await p;
+  console.log("Hello There!");
+  console.log(val);
+  const val2 = await p2;
+  console.log("Hello There! 2");
+  console.log(val2);
+}
+handlePromise();
+/**
+ * // 📌 `Hi` printed instantly -> now code will wait for 3 secs -> After 3 secs both promises
+will be resolved so ('Hello There!' 'Promise resolved value!!' 'Hello There! 2' 'Promise
+resolved value by p2!!') will get printed immediately. So even though `p2` was resolved
+after 2 secs it had to wait for `p` to get resolved
+
+in reverse case p2 first and then p
+
+// 📌 `Hi` printed instantly -> now code will wait for 2 secs -> After 2 secs ('Hello
+There!' 'Promise resolved value by p2!!') will get printed and in the subsequent second
+i.e. after 3 secs ('Hello There! 2' 'Promise resolved value!!') will get printed
+ */
+
+/**
+ * promise.all() 
+ * resolve --> result in array [val1,val2,val3]
+ * reject --> return first rejected promise [err]
+ * 
+ * promise.allSettled()
+ * resolve --> [val1,val2,val3]
+ * reject --> [val1,err,val2]
+ * 
+ * promise.race()
+ * first fullfilled promise either resoved or rejected
+ * 
+ * promise.any()
+ * seek for first reolved promise
+ *  But what if all promises got failed, so the returned result will be aggregated error i.e. [err1, err2, err3].
+ */
 
 //---------------------------------------------------------------------------------------------------
 /**

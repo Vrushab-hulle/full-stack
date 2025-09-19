@@ -10,8 +10,11 @@ import FetchOld from "./TanstackQuery/FetchOld";
 import ReactQuery from "./TanstackQuery/ReactQuery";
 import ReactQueryIndv from "./TanstackQuery/ReactQueryIndv";
 import DebouncedSearch from "./Debounce/DebouncedSearch";
+import UserInfo from "./HOC/UserInfo";
+import withAuth from "./HOC/withAuth";
 
 export default function App() {
+  const EnhancedComponent = withAuth(UserInfo);
   return (
     <AuthProvider>
       <Routes>
@@ -36,6 +39,7 @@ export default function App() {
           <Route path="/rtq" element={<ReactQuery />} />
           <Route path="/rtq/:id" element={<ReactQueryIndv />} />
           <Route path="/debounce" element={<DebouncedSearch />} />
+          <Route path="/hoc" element={<EnhancedComponent user="Alice" />} />
         </Route>
       </Routes>
     </AuthProvider>

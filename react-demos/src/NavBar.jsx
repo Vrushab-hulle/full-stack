@@ -24,6 +24,9 @@ const NavBar = () => {
         <li>
           <Link to="/debounce">Debounce Effect</Link>
         </li>
+        <li>
+          <Link to="/hoc">HOC</Link>
+        </li>
       </ul>
     </nav>
   );

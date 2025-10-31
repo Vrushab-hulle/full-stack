@@ -442,10 +442,20 @@ onChange={(e) => setQuery(e.target.value)}
 
 export default Search;
 
+When to Use Debouncing:
+Search input fields with autocomplete or instant suggestions.
+Window resizing and orientation change modifications.
+Button clicks to prevent multiple submissions.
+
 ✅ Throttling
 Ensures a function runs at most once in a given interval, no matter how many times the event fires.
 Ignores extra calls until the interval is over.
 Useful for controlling execution frequency in high-frequency events.
+
+When to Use Throttling:
+Logging user scroll events or mouse movements.
+Making API calls on window resize or scroll events.
+Preventing excessive rendering during animations.
 
 # `What is Lifting state up in react?`
 
@@ -483,7 +493,13 @@ Diffing → React compares old VDOM vs new VDOM to detect changes (reconciliatio
 Batch Update → Only the changed parts are updated in the real DOM.
 
 **_Actual Dom process:_**
-“When the browser renders a page, it parses HTML to build the DOM tree, parses CSS to build the CSSOM, combines them into a render tree, calculates layout (position and size of elements), paints pixels to the screen. JavaScript can manipulate DOM and CSS, triggering reflow or repaint, which affects performance.”
+When you load a webpage, the browser performs multiple steps before anything appears visually:
+HTML parsing → DOM creation
+CSS parsing → CSSOM creation
+Combine DOM + CSSOM → Render Tree
+Layout (Reflow)
+Painting
+Compositing
 
 Important Notes:
 Reflow / Layout is expensive → avoid frequent DOM changes.
@@ -760,7 +776,7 @@ state.push(action.payload)
 }
 }
 });
-export const{addUser} = userSlice.action;
+export const{addUser} = userSlice.actions;
 export default userSlice.reducer
 
 const store= configureStore({
@@ -786,17 +802,18 @@ redux/@toolkit library
 # `Explain lifecycle method in React js`
 
 Mounting
-
 - ctor
 - static getDerivedStateFromProps(props,state)
 - render()
 - componentDidMount()
+
   Updating
 - static getDerivedStateFromProps(props,state)
 - shouldComponentUpdate
 - render
 - getSnapShotBeforeUpdate(prevProp,prevState)
 - componentDidMount()
+
   Unmounting
 - componentWillUnmount
 

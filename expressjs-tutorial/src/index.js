@@ -1,25 +1,70 @@
-import dotenv from "dotenv";
-import express from "express";
-import cookieParser from 'cookie-parser';
-import { connectDb } from "./db/connectDb.js";
-import routes from "./routes/index.js";
-import { middlewareExample } from "./utils/middlewares.js";
+// import dotenv from "dotenv";
+// import express from "express";
+// import cookieParser from 'cookie-parser';
+// import { connectDb } from "./db/connectDb.js";
+// import routes from "./routes/index.js";
+// import { middlewareExample } from "./utils/middlewares.js";
 
-dotenv.config();
+// dotenv.config();
+// const app = express();
+
+// const port = process.env.PORT || 3000;
+
+// app.use(middlewareExample);
+// //register global routes folder in index file
+// app.use(express.json()); //allows us to parse incoming request:req.body
+// app.use(cookieParser()); //allows us to parse incoming cookie
+// app.use(routes);
+
+// app.listen(port, () => {
+//   connectDb();
+//   console.log(`server is up on port ${port}`);
+// });
+
+//------------------------------------------------------------------------
+
+
+const express = require("express");
+const multer = require("multer");
+const path = require("path");
+
 const app = express();
 
-const port = process.env.PORT || 3000;
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 
-app.use(middlewareExample);
-//register global routes folder in index file
-app.use(express.json()); //allows us to parse incoming request:req.body
-app.use(cookieParser()); //allows us to parse incoming cookie
-app.use(routes);
-
-app.listen(port, () => {
-  connectDb();
-  console.log(`server is up on port ${port}`);
+app.get("/", (req, res) => {
+  console.log("hey there");
+  return res.render("homepage");
 });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    return cb(null, "./uploads");
+  },
+
+  filename: function (req, file, cb) {
+    return cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+//to parse from data
+app.use(express.urlencoded({ extended: false }));
+
+app.post("/upload", upload.single("profileImage"), (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+
+  return res.redirect("/");
+});
+
+app.listen(5151, () => {
+  console.log("server is started");
+});
+
+
 
 //------------------------------------------------------------------------
 //Returns middleware that only parses json and only

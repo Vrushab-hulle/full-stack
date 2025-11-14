@@ -50,7 +50,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-//to parse from data
+//to parse form data
 app.use(express.urlencoded({ extended: false }));
 
 app.post("/upload", upload.single("profileImage"), (req, res) => {

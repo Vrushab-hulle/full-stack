@@ -14,3 +14,11 @@ export const deletePost = (id) => {
 export const updatePost = (id) => {
   return api.patch(`/posts/${id}`, { title: "i have been updated" });
 };
+
+export const addUser = async (newUser) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ ...newUser, id: Date.now() });
+    }, 200);
+  });
+};

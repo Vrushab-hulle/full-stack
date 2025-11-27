@@ -13,6 +13,7 @@ import DebouncedSearch from "./Debounce/DebouncedSearch";
 import UserInfo from "./HOC/UserInfo";
 import withAuth from "./HOC/withAuth";
 import VirtualizedList from "./virtulization/VirtualizedList";
+import AddNewUserData from "./TanstackQuery/AddNewUserData";
 
 export default function App() {
   const EnhancedComponent = withAuth(UserInfo);
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/fetchOld" element={<FetchOld />} />
           <Route path="/rtq" element={<ReactQuery />} />
           <Route path="/rtq/:id" element={<ReactQueryIndv />} />
+          <Route path="/user" element={<AddNewUserData />} />
           <Route path="/debounce" element={<DebouncedSearch />} />
           <Route path="/hoc" element={<EnhancedComponent user="Alice" />} />
           <Route path="/vl" element={<VirtualizedList />} />

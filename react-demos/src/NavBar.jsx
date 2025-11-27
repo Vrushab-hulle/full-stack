@@ -22,6 +22,9 @@ const NavBar = () => {
           <Link to="/rtq">New Way fetch(RTQ)</Link>
         </li>
         <li>
+          <Link to="/user">Add new User(RTQ)</Link>
+        </li>
+        <li>
           <Link to="/debounce">Debounce Effect</Link>
         </li>
         <li>

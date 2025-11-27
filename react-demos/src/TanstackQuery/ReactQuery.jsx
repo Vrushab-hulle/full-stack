@@ -72,11 +72,10 @@ const ReactQuery = () => {
         const { id, title } = curr;
         return (
           <div
-            // onClick={() => handleNavigate(id)}
             key={id}
             className=" p-4 bg-white shadow-md rounded-2xl border border-gray-200 hover:shadow-lg transition-shadow"
           >
-            <div>
+            <div onClick={() => handleNavigate(id)}>
               <h2 className="font-semibold text-lg mb-2">Post #{id}</h2>
               <p className="text-gray-700">{title}</p>
             </div>
